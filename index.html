@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>24 días para mi persona favorita ❤️</title>
+    <style>
+      :root {
+        --pink: #f7c8d8;
+        --light: #fff4f7;
+        --dark: #a64d70;
+        --red: #d87598;
+        --white: #fff;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: Georgia, serif;
+        background: linear-gradient(145deg, #fff5f8, #fce0e9);
+        color: #754052;
+        text-align: center;
+        min-height: 100vh;
+      }
+      header {
+        padding: 42px 18px 20px;
+      }
+      h1 {
+        color: var(--dark);
+        font-size: clamp(2rem, 6vw, 3.4rem);
+        margin: 8px;
+      }
+      .subtitle {
+        font-size: 1.1rem;
+      }
+      .counter {
+        display: inline-block;
+        background: white;
+        border-radius: 20px;
+        padding: 12px 22px;
+        margin: 12px;
+        box-shadow: 0 4px 15px #d98ca522;
+      }
+      .progress {
+        height: 9px;
+        background: #f1d3df;
+        max-width: 350px;
+        margin: 10px auto;
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      #bar {
+        height: 100%;
+        width: 0;
+        background: #d87598;
+        transition: 0.4s;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 13px;
+        max-width: 850px;
+        margin: 25px auto;
+        padding: 15px;
+      }
+      .day {
+        min-height: 115px;
+        border: 2px solid #f2c3d4;
+        border-radius: 17px;
+        background: white;
+        color: var(--dark);
+        cursor: pointer;
+        padding: 12px 5px;
+        box-shadow: 0 5px 12px #b96c8820;
+        transition: transform 0.2s;
+        font-family: inherit;
+      }
+      .day:not(:disabled):hover {
+        transform: translateY(-5px);
+      }
+      .day .number {
+        font-size: 2rem;
+        display: block;
+      }
+      .day .symbol {
+        font-size: 1.5rem;
+        display: block;
+        margin: 5px;
+      }
+      .day:disabled {
+        cursor: not-allowed;
+        background: #f4e4e9;
+        color: #b99aa5;
+        border-color: #ead6de;
+      }
+      .day.opened {
+        background: #ffe7ef;
+        border-color: #d87598;
+      }
+      .note {
+        padding: 15px;
+        font-size: 0.9rem;
+      }
+      footer {
+        padding: 25px;
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: #582c4088;
+        z-index: 10;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+      .modal-content {
+        background: #fff9fb;
+        width: 100%;
+        max-width: 520px;
+        max-height: 85vh;
+        overflow-y: auto;
+        border-radius: 24px;
+        padding: 28px 22px;
+        box-shadow: 0 10px 35px #4b183544;
+        animation: appear 0.3s ease;
+      }
+      @keyframes appear {
+        from {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .modal-content h2 {
+        color: var(--dark);
+      }
+      .close {
+        border: none;
+        background: #f4d4e0;
+        color: #87445e;
+        border-radius: 20px;
+        padding: 10px 22px;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+      .surprise {
+        line-height: 1.8;
+        white-space: pre-line;
+      }
+      @media (max-width: 520px) {
+        .grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 9px;
+        }
+        .day {
+          min-height: 100px;
+        }
+      }
+      .test-panel {
+        background: white;
+        max-width: 420px;
+        margin: 20px auto;
+        padding: 18px;
+        border-radius: 18px;
+        border: 2px dashed #d87598;
+      }
+      .test-panel select {
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #e5b7c8;
+        margin: 8px;
+      }
+      .test-panel button {
+        background: #d87598;
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 12px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div style="font-size: 2.5rem">🎀 💗 🎄 💗 🎀</div>
+      <h1>24 días para ti, mi amor</h1>
+      <h2>PARA MI AZU ❤️🥰</h2>
+      <p class="subtitle">
+        Un diciembre lleno de pequeños regalos para la persona más especial de
+        mi vida.
+      </p>
+      <div class="counter">
+        <strong id="progressText">0 de 24 sorpresas descubiertas ❤️</strong>
+        <div class="progress"><div id="bar"></div></div>
+      </div>
+      <p>Para mi preciosa Azu, con todo mi amor. ❤️</p>
+    </header>
+
+
+    <main>
+      <div class="grid" id="calendar"></div>
+      <p class="note">Cada día tiene una sorpresa esperándote mi amor 💌</p>
+    </main>
+
+    <footer>
+      Hecho con muchísimo amor de tu novio para ti preciosura ❤️<br />
+      Diciembre de 2026
+    </footer>
+
+    <div class="modal" id="modal" onclick="closeOutside(event)">
+      <div class="modal-content">
+        <div style="font-size: 2rem">💌</div>
+        <h2 id="modalTitle"></h2>
+        <div class="surprise" id="modalText"></div>
+        <div id="mediaArea"></div>
+        <br />
+        <button class="close" onclick="closeModal()">
+          Cerrar con un besito ❤️
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const regalos = [
+        [
+          "Una bienvenida especial",
+          "Mi amorcito, hoy comienza diciembre y quise preparar algo diferente para ti... Cada día encontrarás un pedacito de mi corazón, un recuerdo, una sorpresa o una razón más para sonreír 🥹 Gracias por formar parte de mi vida. Te amo muchísimo mi vida hermosa ❤️",
+        ],
+        [
+          "Un recuerdo nuestro",
+          "Hay fotografías que guardan mucho más que una imagen: guardan abrazos, sonrisas y momentos que quisiera repetir una y mil veces. Hoy quiero recordarte lo feliz que soy cuando estoy contigo. ❤️ Hay fotografías que guardan mucho más que una imagen: guardan abrazos, sonrisas y momentos que quisiera repetir una y mil veces. Hoy quiero recordarte lo feliz que soy cuando estoy contigo. ❤️ Y si hay un recuerdo que ocupa un lugar muy especial en mi corazón es aquel día que pasamos juntos en la playa 🥹🌊 Fue uno de esos momentos únicos e inolvidables que se quedan grabados para siempre en la memoria. Disfrutar de aquel día a tu lado, compartir las risas, las aventuras y simplemente tenerte conmigo hizo que todo fuera aún más especial. Sin duda ha sido uno de los momentos más bonitos y especiales que he vivido en mi vida, porque no solamente recuerdo el lugar, sino lo feliz que fui compartiéndolo contigo.Ojalá podamos volver a vivir muchísimas aventuras así, conocer nuevos lugares y seguir creando recuerdos que algún día podamos mirar con una sonrisa. Porque lo más bonito de cada viaje no es el destino, sino tenerte a ti a mi lado. Te amo mi preciosa ❤️🥹",
+        ],
+        [
+          "Tres cosas que amo de ti",
+          "Amo tu sonrisa, porque ilumina mis días. Amo tu manera de ser, porque tienes algo que te hace única. Y amo la tranquilidad y felicidad que siento cuando estoy a tu lado. ¡Y esas son solamente tres de las muchísimas cosas que amo de ti! 🥹",
+        ],
+        [
+          "Un vale para nosotros",
+          "🎟️ VALE POR UNA CITA JUNTOS.\n\nUna salida elegida entre los dos, sin prisas, disfrutando de nuestra compañía y creando otro recuerdo bonito. ❤️",
+        ],
+        [
+          "Nuestra historia",
+          "Si pudiera volver a vivir alguno de nuestros momentos, créeme que elegiría muchísimos de los que hemos compartido, porque cada uno tiene algo especial que lo hace único. Desde nuestras salidas, nuestras aventuras, las risas, los abrazos, los besitos y hasta esos ratitos en los que simplemente estamos juntos sin necesidad de hacer algo extraordinario. 🥹❤️ Me encanta mirar hacia atrás y darme cuenta de todo lo que hemos vivido, de las experiencias que hemos compartido y de cómo poco a poco hemos ido escribiendo nuestra propia historia. Cada recuerdo tiene un pedacito de nosotros y, si algo tengo claro, es que todavía nos faltan muchísimas cosas por vivir. Quiero seguir acumulando fotografías, anécdotas, viajes, aventuras y momentos que algún día podamos recordar con una enorme sonrisa. Porque no importa si estamos en un lugar increíble o simplemente compartiendo un día cualquiera, cuando estoy contigo siempre encuentro una razón para sentirme feliz. Gracias por cada momento mi princesa hermosa. Si pudiera elegir nuevamente con quién vivir todas estas experiencias, volvería a elegirte a ti. Y si algo deseo es que esta historia que comenzamos a escribir siga llenándose de capítulos hermosos. Te amo muchísimo mi vida. ❤️🥹",
+        ],
+        [
+          "Una canción para ti",
+          `Hoy quiero dedicarte una canción. Escúchala pensando en nosotros y en todo lo bonito que todavía nos queda por vivir. 🎶
+
+                Feliz cumpleaños a mi persona favorita, a la persona que mas amo y del amor de mi vida ❤️
+
+      Espero que te guste, mi amor. ❤️`,
+        ],
+        [
+          "Un video para mi niña",
+          "Preparé algo para que puedas verme y recordar cuánto te amo. Quiero que sepas que detrás de cada detalle siempre hay alguien que piensa en ti con muchísimo cariño. ❤️\n\nCada momento queda guardado en mi corazon.. porque desde que llegaste a mi vida todo a sido mas bonito 😍",
+        ],
+        [
+          "Cinco cosas que admiro de ti",
+          "Admiro tu esfuerzo, tu dedicación, tu forma de enfrentar los días complicados, tu corazón y esa capacidad que tienes de hacer especiales los momentos más sencillos. Estoy muy orgulloso de ti, mi amor. Eres mi mayor orgullo en esta vida y definitivamente soy tu mayor fan ❤️",
+        ],
+        [
+          "Un collage de nosotros",
+          "Cada fotografía cuenta una pequeña parte de nuestra historia. Y aunque todavía nos faltan muchísimas aventuras, me encanta mirar atrás y descubrir todo lo que hemos construido juntos. 🥹",
+        ],
+        [
+          "Tarde de cine",
+          "🎟️ VALE POR UNA TARDE DE CINE.\n\nIncluye películas, comida rica, abrazos, besitos y mucho tiempo juntos. La película la elegimos entre los dos 🍿❤️",
+        ],
+        [
+          "¡Nuestro primer aniversario!",
+          `11 DE DICIEMBRE DE 2026 ❤️
+
+      ¡UN AÑO JUNTOS!
+
+      Hace un año comenzó esta aventura tan bonita. Gracias por cada sonrisa, cada abrazo, cada aprendizaje y cada momento que hemos compartido. No todo ha sido perfecto, pero aquí seguimos, construyendo nuestra historia y aprendiendo a elegirnos.
+
+      Quiero seguir celebrando muchos aniversarios contigo. Te amo, mi vida. 🥹❤️
+
+      Te preparé una sorpresa:`,
+        ],
+        [
+          "Mis promesas para nosotros",
+          "Prometo escucharte siempre porque soy tu apoyo hoy y siempre. Prometo hablar contigo con honestidad, cuidar lo que estamos construyendo y no dejar que el orgullo sea más grande que nuestro amor. Prometo celebrar tus logros, acompañarte en los días difíciles y seguir creciendo a tu lado. No prometo ser perfecto, pero sí poner de mi parte para construir algo bonito contigo. ❤️",
+        ],
+        [
+          "Otra canción especial",
+          "Hay canciones que parecen hablar de nosotros. Hoy quiero regalarte otra melodía para que la guardes entre tus recuerdos favoritos.\n\nPara la mujer de mi vida 😍",
+        ],
+        [
+          "Diez besitos pendientes",
+          "Este vale representa diez besitos que tienes que cobrarme. No importa cuándo ni dónde, siempre encontraré una oportunidad para consentirte. ¡Y no acepto devoluciones! 😘❤️",
+        ],
+        [
+          "Cómo imagino nuestro futuro",
+          "Cuando pienso en el futuro, me gusta imaginarte a mi lado. Compartiendo metas, viajes, momentos sencillos, risas y también retos. No quiero solamente soñar contigo, quiero trabajar contigo para hacer realidad esos sueños. 🥹❤️Me ilusiona pensar en todas las cosas que todavía nos quedan por vivir: conocer lugares nuevos, descubrir rinconcitos juntos, tener muchas citas, celebrar nuestros logros y crear recuerdos que algún día podamos mirar con una sonrisa. \n\nTambién imagino esos días cotidianos en los que no necesitamos hacer nada extraordinario para ser felices, porque simplemente estar juntos, pasar por ti al trabajo, platicar sobre nuestro día o abrazarnos después de un día cansado será suficiente para sentir que estamos donde queremos estar. \n\nMe gusta imaginar que poco a poco iremos construyendo algo nuestro, un hogar lleno de cariño, confianza, tranquilidad y muchas historias que contar. Un lugar donde podamos apoyarnos, impulsarnos a cumplir nuestros sueños y recordar que somos un equipo, incluso cuando las cosas no salgan como esperamos. Sé que el futuro no siempre será perfecto y que habrá días complicados, diferencias y retos que tendremos que enfrentar, pero quiero que aprendamos a resolverlos juntos, a escucharnos, comprendernos y nunca dejar de cuidarnos. No espero que todo sea fácil, solamente deseo que siempre tengamos las ganas de seguir creciendo y construyendo algo bonito el uno con el otro. Y si algo tengo claro mi amor es que no quiero que te quedes solamente en los planes que imaginamos quiero que seas parte de las experiencias que hagamos realidad. Quiero seguir eligiéndote, enamorándome de ti en cada etapa y descubriendo nuevas razones para agradecer que coincidimos en esta vida. \n\nPorque cuando imagino mi futuro, no solamente pienso en lo que quiero lograr, sino también en con quién quiero compartirlo… y mi persona favorita para vivir todo eso eres tú. Te amo muchote mi vida. Quiero muchos mañanas contigo. ❤️🥹",
+        ],
+        [
+          "Un reto para los dos",
+          "Hoy tenemos un reto: cada uno debe decir tres cosas que quiere vivir con el otro durante el próximo año. Después elegimos una y buscamos la manera de hacerla realidad... 🥰",
+        ],
+        [
+          "Construyamos nuestra casita de jengibre 🏠🎄",
+          "Hoy tenemos una misión especial mi vida: ¡construir nuestra propia casita de jengibre! 🥰❤️\n\nQuiero que pasemos un ratito bonito juntos, armando, decorando y poniendo a prueba nuestra creatividad. Podemos llenarla de dulces, ponerle muchos detalles y hacer que quede tan bonita como podamos… aunque seguramente terminemos comiéndonos algunos dulces antes de terminarla jaja 🙈\n\nY quiero que cuando la terminemos podamos verla y decir: «Esta la hicimos nosotros». Porque me encanta la idea de seguir construyendo cosas contigo, desde una pequeña casita de jengibre hasta todos esos sueños que tenemos juntos.\n\n¿Lista para nuestra pequeña construcción navideña mi vida hermosa? ❤️🏠🎄",
+        ],
+        [
+          "Un día para consentirte",
+          "🎟️ VALE POR UN DÍA DE CONSENTIRTE.\n\nHoy tú eliges: apapachos, besitos, una comida rica o simplemente pasar tiempo juntos. Mi misión será hacerte sentir muy querida. 💗",
+        ],
+        [
+          "Nuestro frasco de aventuras ✨",
+          "Mi vida, hoy quiero que comencemos a llenar un frasquito de sueños y aventuras. ❤️ \n\nLa idea es escribir juntos 12 experiencias que nos gustaría vivir durante nuestro próximo año. Cada papelito representará un plan, una ilusión o una pequeña aventura que queremos hacer realidad. Podemos incluir desde conocer un lugar nuevo, visitar algún pueblito mágico, tener una cita diferente, disfrutar de un atardecer, ir al cine o simplemente preparar una tarde especial en casa.\n\nDespués iremos sacando nuestros papelitos y buscaremos la manera de cumplir cada uno.\n\nQuiero que este frasquito se convierta en un recordatorio de todas las cosas que todavía nos esperan y de que siempre podemos encontrar nuevas razones para seguir creando momentos juntos.\n\n¡Tenemos 12 nuevas aventuras por delante, mi amor! 🥹❤️",
+        ],
+        [
+          "Veinte motivos para elegirte",
+          "Porque me haces sonreír. Porque disfruto tu compañía. Porque admiro quién eres. Porque quiero verte cumplir tus sueños. Porque contigo puedo imaginar un futuro. Porque me gusta abrazarte. Porque amo tus detalles. Porque quiero aprender contigo. Y porque, entre tantas personas, mi corazón siempre te va a elegir a ti. ❤️",
+        ],
+        [
+          "Gracias por estar",
+          "Hoy quiero agradecerte por estar a mi lado... Gracias por compartir tu tiempo conmigo, por tus abrazos, por tus sonrisas y por permitirme conocerte cada día un poquito más. Gracias por formar parte de mi historia. Quiero que siempre tengas presente lo importante que eres para mí. 🥹",
+        ],
+        [
+          "Volvamos a nuestra primera cita",
+          "¿Recuerdas aquella primera salida a comer a Chilli's? 🥹❤️ Cuando todo eran nervios, cuando apenas comenzábamos a conocernos y todavía no imaginábamos hasta dónde nos llevaría aquella primera cita. Hoy quiero proponerte que volvamos a recrear ese momento tan especial. Regresemos a ese lugar, compartamos nuevamente una comida y recordemos cómo comenzó esta historia que hoy significa tanto para mí. Me encantaría que pudiéramos platicar de lo que pensábamos aquel día, de nuestras primeras impresiones y de todas las cosas que han cambiado desde entonces. \n\nEs curioso pensar que aquella salida que comenzó como una oportunidad para conocernos terminó convirtiéndose en el inicio de una historia que hoy estamos celebrando. Volvería a tener esos mismos nervios si eso significara volver a conocerte y enamorarme de ti. Gracias por ser parte de mi vida, princesa. Te amo muchísimo. ❤️",
+        ],
+        [
+          "Ya casi es Navidad... Nuestra cita navideña 🎄",
+          "Mi amorcito estamos llegando al final de este pequeño calendario pero no al final de nuestras sorpresas ni de nuestra historia... ¡Ya casi llega Navidad, mi preciosa! 🎄❤️ Y antes de que termine este calendario, quiero que tengamos una cita muy especial para disfrutar juntos de esta época tan bonita. Me gustaría salir contigo a ver las luces navideñas, caminar tomados de la mano, compartir un chocolate caliente, tomarnos fotografías y disfrutar de todo ese ambiente que hace que diciembre se sienta tan especial.\n\n Quiero que tengamos una de esas tardes que parecen sencillas, pero que terminan convirtiéndose en recuerdos que guardamos con muchísimo cariño. Y, por supuesto, no pueden faltar los abrazos, los besitos y algún pequeño detalle navideño para ti. Porque si hay algo que hace todavía más bonita esta temporada, es poder compartirla contigo. Te amo, mi niña hermosa. 🥹❤️",
+        ],
+        [
+          "Mi deseo para nuestro futuro",
+          "Si hay algo que deseo de corazón es que sigamos construyendo una vida en la que ambos podamos ser felices. Quiero compartir contigo los días buenos y acompañarte en los difíciles, cumplir sueños, conocer lugares, construir nuestro hogar y seguir creciendo sin dejar de ser nosotros mismos.\n\nNo sé exactamente qué nos espera, pero sí sé que me hace mucha ilusión imaginarlo contigo. Gracias por este año, por nuestra historia y por todo lo que todavía nos falta vivir.\n\nTe amo mi Azu... Eres mi persona favorita y quiero seguir eligiéndote cada día ❤️🥹",
+        ],
+      ];
+
+      const iconos = [
+        "💌",
+        "📸",
+        "💕",
+        "🎟️",
+        "🌷",
+        "🎶",
+        "🎥",
+        "🌟",
+        "🖼️",
+        "🍿",
+        "💍",
+        "🤞",
+        "🎵",
+        "😘",
+        "🏡",
+        "🎯",
+        "😂",
+        "🧸",
+        "✨",
+        "❤️",
+        "💗",
+        "📷",
+        "🎄",
+        "💖",
+      ];
+
+      function fechaActual() {
+        const partes = new Intl.DateTimeFormat("en-CA", {
+          timeZone: "America/Mexico_City",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        }).formatToParts(new Date());
+
+        const p = Object.fromEntries(partes.map((x) => [x.type, x.value]));
+
+        return {
+          year: Number(p.year),
+          month: Number(p.month),
+          day: Number(p.day),
+        };
+      }
+
+      function actualizar() {
+        const hoy = fechaActual();
+        const calendario = document.getElementById("calendar");
+        calendario.innerHTML = "";
+        let abiertos = JSON.parse(localStorage.getItem("regalosAzu") || "[]");
+
+        regalos.forEach((regalo, i) => {
+          const numero = i + 1;
+          const desbloqueado =
+            hoy.year === 2026 && hoy.month === 12 && hoy.day >= numero;
+
+          const boton = document.createElement("button");
+          boton.className =
+            "day" + (abiertos.includes(numero) ? " opened" : "");
+          boton.disabled = !desbloqueado;
+          boton.innerHTML = `<span class="number">${numero}</span>
+            <span class="symbol">${desbloqueado ? (abiertos.includes(numero) ? "💗" : iconos[i]) : "🔒"}</span>
+            <span>${desbloqueado ? (abiertos.includes(numero) ? "Descubierto" : "Abrir regalo") : "Próximamente"}</span>`;
+          if (desbloqueado) boton.onclick = () => abrirRegalo(numero);
+          calendario.appendChild(boton);
+        });
+
+        document.getElementById("progressText").textContent =
+          `${abiertos.length} de 24 sorpresas descubiertas ❤️`;
+        document.getElementById("bar").style.width =
+          (abiertos.length / 24) * 100 + "%";
+      }
+
+      function abrirRegalo(numero) {
+        const [titulo, mensaje] = regalos[numero - 1];
+
+        document.getElementById("modalTitle").textContent =
+          `Día ${numero}: ${titulo}`;
+
+        document.getElementById("modalText").textContent = mensaje;
+
+        // Limpiar el espacio de contenido adicional
+        document.getElementById("mediaArea").innerHTML = "";
+
+        // Fotografía del día 1
+        if (numero === 1) {
+          document.getElementById("mediaArea").innerHTML = `
+          <img
+            src="fotos/recuerdo-azu0.jpg"
+            alt="Un recuerdo especial de nosotros"
+            style="
+              width:100%;
+              max-width:350px;
+              border-radius:18px;
+              margin-top:15px;
+              box-shadow:0 5px 15px #d8759855;
+            "
+          >
+        `;
+        }
+
+        // Fotografía del día 2
+        if (numero === 2) {
+          document.getElementById("mediaArea").innerHTML = `
+          <img
+            src="fotos/recuerdo-azu.jpg"
+            alt="Un recuerdo especial de nosotros"
+            style="
+              width:100%;
+              max-width:350px;
+              border-radius:18px;
+              margin-top:15px;
+              box-shadow:0 5px 15px #d8759855;
+            "
+          >
+        `;
+        }
+
+        // Fotografía del día 3
+        if (numero === 3) {
+          document.getElementById("mediaArea").innerHTML = `
+          <img
+            src="fotos/recuerdo-azu9.jpg"
+            alt="Un recuerdo especial de nosotros"
+            style="
+              width:100%;
+              max-width:350px;
+              border-radius:18px;
+              margin-top:15px;
+              box-shadow:0 5px 15px #d8759855;
+            "
+          >
+        `;
+        }
+
+        // Fotografía del día 9
+        if (numero === 9) {
+          document.getElementById("mediaArea").innerHTML = `
+          <img
+            src="fotos/recuerdo-azu2.jpg"
+            alt="Un recuerdo especial de nosotros"
+            style="
+              width:100%;
+              max-width:350px;
+              border-radius:18px;
+              margin-top:15px;
+              box-shadow:0 5px 15px #d8759855;
+            "
+          >
+        `;
+        }
+
+        // Fotografía del día 4
+        if (numero === 4) {
+          document.getElementById("mediaArea").innerHTML = `
+          <img
+            src="fotos/recuerdo-azu3.jpg"
+            alt="Un recuerdo especial de nosotros"
+            style="
+              width:100%;
+              max-width:350px;
+              border-radius:18px;
+              margin-top:15px;
+              box-shadow:0 5px 15px #d8759855;
+            "
+          >
+        `;
+        }
+
+        // Fotografía del día 5
+        if (numero === 5) {
+          document.getElementById("mediaArea").innerHTML = `
+          <img
+            src="fotos/recuerdo-azu4.jpg"
+            alt="Un recuerdo especial de nosotros"
+            style="
+              width:100%;
+              max-width:350px;
+              border-radius:18px;
+              margin-top:15px;
+              box-shadow:0 5px 15px #d8759855;
+            "
+          >
+        `;
+        }
+
+        // Enlace de YouTube para el día 6
+        if (numero === 6) {
+          document.getElementById("mediaArea").innerHTML = `
+          <a href="https://www.youtube.com/watch?v=byGXHhEF8XEs"
+             target="_blank"
+             rel="noopener noreferrer"
+             style="
+               display:inline-block;
+               background:#d87598;
+               color:white;
+               padding:13px 22px;
+               border-radius:25px;
+               text-decoration:none;
+               margin-top:15px;
+               font-weight:bold;
+             ">
+             🎵 Escucha nuestra canción, preciosa ❤️
+          </a>
+        `;
+        }
+
+        // Enlace de YouTube para el día 7
+        if (numero === 7) {
+          document.getElementById("mediaArea").innerHTML = `
+          <a href="https://www.youtube.com/shorts/9kEgkERKTzs?si=JY0RRK119WWV818I"
+             target="_blank"
+             rel="noopener noreferrer"
+             style="
+               display:inline-block;
+               background:#d87598;
+               color:white;
+               padding:13px 22px;
+               border-radius:25px;
+               text-decoration:none;
+               margin-top:15px;
+               font-weight:bold;
+             ">
+             🎥 Disfruta nuestro video preciosa ❤️
+          </a>
+        `;
+        }
+
+        // Fotografía del día 8
+        if (numero === 8) {
+          document.getElementById("mediaArea").innerHTML = `
+          <img
+            src="fotos/recuerdo-azu8.jpg"
+            alt="Un recuerdo especial de nosotros"
+            style="
+              width:100%;
+              max-width:350px;
+              border-radius:18px;
+              margin-top:15px;
+              box-shadow:0 5px 15px #d8759855;
+            "
+          >
+        `;
+        }
+
+        // Enlace especial para el primer aniversario
+        if (numero === 11) {
+          document.getElementById("mediaArea").innerHTML = `
+            <a href="https://matthewgumoco.github.io/aniversario/"
+               target="_blank"
+               rel="noopener noreferrer"
+               style="
+                 display:inline-block;
+                 background:#d87598;
+                 color:white;
+                 padding:13px 22px;
+                 border-radius:25px;
+                 text-decoration:none;
+                 margin-top:15px;
+                 font-weight:bold;
+               ">
+               💌 Abrir mi sorpresa, preciosa 🙈❤️
+            </a>
+          `;
+        }
+
+        // Fotografía del día 12
+        if (numero === 12) {
+          document.getElementById("mediaArea").innerHTML = `
+          <img
+            src="fotos/recuerdo-azu12.jpg"
+            alt="Un recuerdo especial de nosotros"
+            style="
+              width:100%;
+              max-width:350px;
+              border-radius:18px;
+              margin-top:15px;
+              box-shadow:0 5px 15px #d8759855;
+            "
+          >
+        `;
+        }
+
+        // Enlace de YouTube para el día 13
+        if (numero === 13) {
+          document.getElementById("mediaArea").innerHTML = `
+          <a href="https://www.youtube.com/watch?v=a_wBQrUdcvk"
+             target="_blank"
+             rel="noopener noreferrer"
+             style="
+               display:inline-block;
+               background:#d87598;
+               color:white;
+               padding:13px 22px;
+               border-radius:25px;
+               text-decoration:none;
+               margin-top:15px;
+               font-weight:bold;
+             ">
+             🎵 Escucha nuestra canción, preciosa ❤️
+          </a>
+        `;
+        }
+
+        // Fotografía del día 14
+        if (numero === 14) {
+          document.getElementById("mediaArea").innerHTML = `
+          <img
+            src="fotos/recuerdos-azu14.JPG"
+            alt="Un recuerdo especial de nosotros"
+            style="
+              width:100%;
+              max-width:350px;
+              border-radius:18px;
+              margin-top:15px;
+              box-shadow:0 5px 15px #d8759855;
+            "
+          >
+        `;
+        }
+
+        // Fotografía del día 15
+        if (numero === 15) {
+          document.getElementById("mediaArea").innerHTML = `
+          <img
+            src="fotos/recuerdo-azu15.jpg"
+            alt="Un recuerdo especial de nosotros"
+            style="
+              width:100%;
+              max-width:350px;
+              border-radius:18px;
+              margin-top:15px;
+              box-shadow:0 5px 15px #d8759855;
+            "
+          >
+        `;
+        }
+
+        // Fotografía del día 24
+        if (numero === 24) {
+          document.getElementById("mediaArea").innerHTML = `
+          <img
+            src="fotos/recuerdo-azu24.jpg"
+            alt="Un recuerdo especial de nosotros"
+            style="
+              width:100%;
+              max-width:350px;
+              border-radius:18px;
+              margin-top:15px;
+              box-shadow:0 5px 15px #d8759855;
+            "
+          >
+        `;
+        }
+
+        document.getElementById("modal").style.display = "flex";
+
+        let abiertos = JSON.parse(localStorage.getItem("regalosAzu") || "[]");
+
+        if (!abiertos.includes(numero)) {
+          abiertos.push(numero);
+          localStorage.setItem("regalosAzu", JSON.stringify(abiertos));
+          actualizar();
+        }
+      }
+
+      function closeModal() {
+        document.getElementById("modal").style.display = "none";
+      }
+      function closeOutside(e) {
+        if (e.target.id === "modal") closeModal();
+      }
+
+      actualizar();
+
+      const selector = document.getElementById("testDay");
+
+      for (let i = 1; i <= 24; i++) {
+        const opcion = document.createElement("option");
+        opcion.value = i;
+        opcion.textContent = `Simular ${i} de diciembre`;
+        selector.appendChild(opcion);
+      }
+
+      function probarFecha() {
+        const dia = Number(selector.value);
+
+        if (dia === 0) {
+          restaurarFecha();
+          return;
+        }
+
+        fechaSimulada = dia;
+        actualizar();
+
+        document.getElementById("testMessage").textContent =
+          `🧪 Simulando el ${dia} de diciembre de 2026.`;
+      }
+
+      function restaurarFecha() {
+        fechaSimulada = null;
+        selector.value = "0";
+        actualizar();
+
+        document.getElementById("testMessage").textContent =
+          "❤️ Fecha real restaurada.";
+      }
+    </script>
+  </body>
+</html>
