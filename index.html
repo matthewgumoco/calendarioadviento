@@ -200,6 +200,19 @@
       </div>
       <p>Para mi preciosa Azu, con todo mi amor. ❤️</p>
     </header>
+    <div class="test-panel">
+      <h3>🧪 Modo de pruebas</h3>
+      <p>Simula cualquier día de diciembre para probar los regalos.</p>
+
+      <select id="testDay">
+        <option value="0">Fecha real</option>
+      </select>
+
+      <button onclick="probarFecha()">Probar fecha</button>
+      <button onclick="restaurarFecha()">Restaurar</button>
+
+      <p id="testMessage">Funcionando con la fecha real.</p>
+    </div>
 
 
     <main>
@@ -364,7 +377,18 @@
         "💖",
       ];
 
-      function fechaActual() {
+            let fechaSimulada = null;
+
+
+     function fechaActual() {
+        if (fechaSimulada !== null) {
+          return {
+            year: 2026,
+            month: 12,
+            day: fechaSimulada,
+          };
+        }
+
         const partes = new Intl.DateTimeFormat("en-CA", {
           timeZone: "America/Mexico_City",
           year: "numeric",
